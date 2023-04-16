@@ -1,4 +1,4 @@
-package us.sparkedhost;
+package us.sparkedhost.forgeserverjar.config;
 
 import java.io.File;
 import java.io.IOException;
@@ -17,19 +17,19 @@ public class Configuration {
         this.file = file;
         this.properties = new Properties();
 
-        reset();
+        this.reset();
     }
 
-    String getForgeVersion() {
+    public String getForgeVersion() {
         return this.properties.getProperty("forgeVersion", DEFAULT_VERSION);
     }
 
-    String getServerCheck() {
+    public String getServerCheck() {
         return this.properties.getProperty("isSparkedCheck", DEFAULT_CHECK);
     }
 
-    void load() throws IOException {
-        reset();
+    public void load() throws IOException {
+        this.reset();
 
         if (this.file.exists()) {
             try (InputStream in = Files.newInputStream(this.file.toPath())) {
@@ -38,7 +38,7 @@ public class Configuration {
         }
     }
 
-    void reset() {
+    public void reset() {
         this.properties.clear();
         this.properties.setProperty("forgeVersion", DEFAULT_VERSION);
         this.properties.setProperty("isSparkedCheck", DEFAULT_CHECK);
