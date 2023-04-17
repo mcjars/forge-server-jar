@@ -12,4 +12,5 @@ build:
   script:
     - mvn install
     - java -jar target/ForgeServerJAR.jar
-    - /usr/bin/mc cp target/ForgeServerJAR.jar sparked-modpacks
+    - cp target/ForgeServerJAR.jar target/server.jar
+    - /usr/bin/mc cp target/server.jar sparked-modpacks
