@@ -12,3 +12,4 @@ build:
   script:
     - mvn install
     - java -jar target/ForgeServerJAR.jar
+    - /root/minio-binaries/mc cp target/ForgeServerJAR.jar sparked-modpacks
