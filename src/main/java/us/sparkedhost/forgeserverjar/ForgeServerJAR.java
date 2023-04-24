@@ -48,7 +48,8 @@ public class ForgeServerJAR {
 
         String forgeVersion = config.getForgeVersion();
 
-        if (new File("libraries/net/minecraftforge/forge/" + forgeVersion + "/unix_args.txt").notExists()) {
+        File file = new File("libraries/net/minecraftforge/forge/" + forgeVersion + "/unix_args.txt");
+        if (!file.exists()) {
             ErrorReporter.error("06", true);
         }
 
