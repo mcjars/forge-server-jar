@@ -48,11 +48,6 @@ public class ForgeServerJAR {
 
         String forgeVersion = config.getForgeVersion();
 
-        File file = new File("libraries/net/minecraftforge/forge/" + forgeVersion + "/unix_args.txt");
-        if (!file.exists()) {
-            ErrorReporter.error("06", true);
-        }
-
         cmd[1 + vmArgs.length] = "@libraries/net/minecraftforge/forge/" + forgeVersion + "/unix_args.txt";
         String cmdStr = String.join(" ", cmd);
 
