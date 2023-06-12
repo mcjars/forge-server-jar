@@ -8,7 +8,6 @@ import java.util.Properties;
 
 public class Configuration {
     private static final String DEFAULT_VERSION = "unknown";
-    private static final String DEFAULT_CHECK = "true";
 
     private final Properties properties;
     private final File file;
@@ -24,10 +23,6 @@ public class Configuration {
         return this.properties.getProperty("forgeVersion", DEFAULT_VERSION);
     }
 
-    public String getServerCheck() {
-        return this.properties.getProperty("isSparkedCheck", DEFAULT_CHECK);
-    }
-
     public void load() throws IOException {
         this.reset();
 
@@ -41,6 +36,5 @@ public class Configuration {
     public void reset() {
         this.properties.clear();
         this.properties.setProperty("forgeVersion", DEFAULT_VERSION);
-        this.properties.setProperty("isSparkedCheck", DEFAULT_CHECK);
     }
 }

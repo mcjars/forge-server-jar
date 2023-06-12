@@ -3,7 +3,6 @@ package us.sparkedhost.forgeserverjar;
 import us.sparkedhost.forgeserverjar.config.Configuration;
 import us.sparkedhost.forgeserverjar.server.ServerBootstrap;
 import us.sparkedhost.forgeserverjar.utils.ErrorReporter;
-import us.sparkedhost.forgeserverjar.utils.SparkedLock;
 
 import java.io.*;
 import java.lang.management.ManagementFactory;
@@ -14,12 +13,6 @@ public class ForgeServerJAR {
 
     public static void main(final String[] args) throws IOException {
         config.load();
-
-        // Kill server if either the config is manually overwritten, or the server is
-        // not hosted with Sparked.
-        if (config.getServerCheck().equalsIgnoreCase("true") && !SparkedLock.isSparkedServer()) {
-            ErrorReporter.error("02", true);
-        }
 
         String forgeCompatibility = System.getenv().get("FORGE_COMPATIBILITY");
         switch (forgeCompatibility) {
@@ -54,6 +47,11 @@ public class ForgeServerJAR {
         System.out.println("\n\033[1;33mStarting Forge 1.17+ server..\033[0m");
         System.out.println("\n\033[1;33mcustomer@sparkedhost:~$\033[0m " + cmdStr);
 
-        new ServerBootstrap().startServer(cmd);
+        try {
+            new ServerBootstrap().startServer(cmd);
+        } catch (ServerBootstrap.ServerStartupException exception) {
+            exception.printStackTrace();
+            System.exit(1);
+        }
     }
 }

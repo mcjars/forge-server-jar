@@ -1,11 +1,9 @@
 package us.sparkedhost.forgeserverjar.server;
 
-import us.sparkedhost.forgeserverjar.utils.ErrorReporter;
-
 import java.io.IOException;
 
 public class ServerBootstrap {
-    public void startServer(String[] cmd) {
+    public void startServer(String[] cmd) throws ServerStartupException {
         try {
             Process process = new ProcessBuilder(cmd)
                     .command(cmd)
@@ -21,9 +19,15 @@ public class ServerBootstrap {
                 } catch (InterruptedException ignore) {
                 }
             }
-        } catch (IOException ex) {
-            ex.printStackTrace();
-            ErrorReporter.error("07", true);
+        } catch (IOException exception) {
+            throw new ServerStartupException("Failed to start the Forge server.", exception);
+        }
+    }
+
+    @SuppressWarnings("InnerClassMayBeStatic")
+    public static class ServerStartupException extends Exception {
+        ServerStartupException(String message, Throwable cause) {
+            super(message, cause);
         }
     }
 }
