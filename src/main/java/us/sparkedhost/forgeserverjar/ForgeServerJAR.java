@@ -15,13 +15,18 @@ public class ForgeServerJAR {
         config.load();
 
         String forgeCompatibility = System.getenv().get("FORGE_COMPATIBILITY");
+        if (forgeCompatibility == null) {
+            ErrorReporter.error("03", true);
+            return;
+        }
+
         switch (forgeCompatibility) {
             case "0":
             case "1":
                 System.out.println("\n\033[1;33mThe server was detected as Forge!\033[0m");
                 break;
             default:
-                ErrorReporter.error("03", forgeCompatibility, true);
+                ErrorReporter.error("03", true);
         }
 
         // Startup process
