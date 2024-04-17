@@ -13,11 +13,12 @@ public class ErrorReporter {
         errorMap.put("02", "Unused, if you see this, open a ticket.");
         errorMap.put("03", "Your server is set to the wrong type (e.g. BungeeCord), please go to Settings and change " +
                 "it to Minecraft: Java Edition.");
-        errorMap.put("04", "This server is missing a critical configuration file. You may have to reinstall it.");
-        errorMap.put("05", "This server has a malformed configuration file. You may have to reinstall it.");
-        errorMap.put("06", "Old server.jar file present.");
+        errorMap.put("04", "Unused, if you see this, open a ticket.");
+        errorMap.put("05", "Unused, if you see this, open a ticket.");
+        errorMap.put("06", "Unused, if you see this, open a ticket.");
         errorMap.put("07", "Failed to start the server.");
-
+        errorMap.put("08", "No directories found in libraries. Is Forge installed correctly?");
+        errorMap.put("09", "Libraries is not empty, but Forge was not found. Is Forge installed correctly?");
     }
 
     public void error(String id, boolean crash) {
