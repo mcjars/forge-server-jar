@@ -17,7 +17,8 @@ jobs:
     - name: Set up JDK 8
       uses: actions/setup-java@v2
       with:
-        java-version: 8
+        java-version: '8'
+        distribution: 'adopt'
 
     - name: Clean Maven
       run: mvn clean
