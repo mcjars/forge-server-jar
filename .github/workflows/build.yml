@@ -36,11 +36,12 @@ jobs:
     steps:
     - name: Create Release
       id: create_release
-      uses: softprops/action-gh-release@v1
+      uses: softprops/action-gh-release@v2
       with:
         files: |
           target/ForgeServerJAR.jar
         token: ${{ secrets.GITHUB_TOKEN }}
-        release_name: Release ${{ github.run_number }}
+        release_name: Release ${GITHUB_SHA::6}
+        tag_name: ${GITHUB_SHA::6}
         draft: false
         prerelease: false
