@@ -40,7 +40,6 @@ jobs:
         files: |
           target/ForgeServerJAR.jar
         token: ${{ secrets.GITHUB_TOKEN }}
-        release_name: Release ${{ steps.get-version-id.outputs.id }}
         tag_name: ${{ steps.get-version-id.outputs.id }}
         draft: false
         prerelease: false
