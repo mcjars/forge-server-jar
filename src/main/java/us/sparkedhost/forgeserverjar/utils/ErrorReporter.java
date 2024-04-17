@@ -29,7 +29,7 @@ public class ErrorReporter {
         System.out.println("\033[1;33m" + message + "\033[0m");
         System.out.println("\033[1;33mUnexpected, or unsure what to do? Contact us @ sparkedhost.com.\033[0m");
         if (crash) {
-            boolean isPipeline = System.getenv().get("IS_GITLAB_PIPELINE") != null;
+            boolean isPipeline = System.getenv().get("GITHUB_ACTIONS") != null;
             System.exit(isPipeline ? 0 : 1);
         }
     }
