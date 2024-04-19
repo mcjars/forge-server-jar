@@ -55,7 +55,7 @@ public class ForgeServerJAR {
         String cmdStr = String.join(" ", cmd);
 
         System.out.println("\n\033[1;33mStarting Forge 1.17+ server..\033[0m");
-        System.out.println("\n\033[1;33mcustomer@sparkedhost:~$\033[0m " + cmdStr);
+        System.out.println("\n\033[1;33mcustomer@apollopanel:~$\033[0m " + cmdStr);
 
         try {
             new ServerBootstrap().startServer(cmd);
