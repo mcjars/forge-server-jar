@@ -8,21 +8,6 @@ import java.lang.management.ManagementFactory;
 
 public class ForgeServerJAR {
     public static void main(final String[] args) {
-        String forgeCompatibility = System.getenv().get("FORGE_COMPATIBILITY");
-        if (forgeCompatibility == null) {
-            ErrorReporter.error("03", true);
-            return;
-        }
-
-        switch (forgeCompatibility) {
-            case "0":
-            case "1":
-                System.out.println("\n\033[1;33mThe server was detected as Forge!\033[0m");
-                break;
-            default:
-                ErrorReporter.error("03", true);
-        }
-
         // Determine unix_args.txt location
         String directoryPath = "libraries/net/minecraftforge/forge";
         String forgeVersion = null;
@@ -53,9 +38,6 @@ public class ForgeServerJAR {
 
         cmd[1 + vmArgs.length] = "@libraries/net/minecraftforge/forge/" + forgeVersion + "/unix_args.txt";
         String cmdStr = String.join(" ", cmd);
-
-        System.out.println("\n\033[1;33mStarting Forge 1.17+ server..\033[0m");
-        System.out.println("\n\033[1;33mcustomer@apollopanel:~$\033[0m " + cmdStr);
 
         try {
             new ServerBootstrap().startServer(cmd);
