@@ -36,7 +36,8 @@ public class ForgeServerJAR {
 
         System.arraycopy(vmArgs, 0, cmd, 1, vmArgs.length);
 
-        cmd[1 + vmArgs.length] = "@libraries/net/minecraftforge/forge/" + forgeVersion + "/unix_args.txt";
+        boolean windows = System.getProperty("os.name").startsWith("Windows");
+        cmd[1 + vmArgs.length] = "@libraries/net/minecraftforge/forge/" + forgeVersion + "/" + (windows ? "win" : "unix") + "_args.txt";
         String cmdStr = String.join(" ", cmd);
 
         try {
