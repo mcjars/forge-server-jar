@@ -26,9 +26,7 @@ public class ErrorReporter {
     }
 
     public void error(String id, String message, boolean crash) {
-        System.out.println("\033[1;33mAn error has occurred while starting the server (err-" + id + "):\033[0m");
-        System.out.println("\033[1;33m" + message + "\033[0m");
-        System.out.println("\033[1;33mUnexpected, or unsure what to do? Contact us @ sparkedhost.com.\033[0m");
+        System.out.println(message);
         if (crash) {
             boolean isPipeline = System.getenv().get("GITHUB_ACTIONS") != null;
             System.exit(isPipeline ? 0 : 1);
