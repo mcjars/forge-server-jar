@@ -55,7 +55,7 @@
 				<configuration>
 					<archive>
 						<manifest>
-							<mainClass>dev.mcvapi.neoforgeserverjar.ForgeServerJAR</mainClass>
+							<mainClass>dev.mcvapi.forgeserverjar.ForgeServerJAR</mainClass>
 						</manifest>
 					</archive>
 				</configuration>
