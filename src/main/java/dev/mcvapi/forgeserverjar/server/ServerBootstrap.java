@@ -1,4 +1,4 @@
-package us.sparkedhost.forgeserverjar.server;
+package dev.mcvapi.forgeserverjar.server;
 
 import java.io.IOException;
 
