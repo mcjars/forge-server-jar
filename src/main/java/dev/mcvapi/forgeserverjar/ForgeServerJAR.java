@@ -30,7 +30,13 @@ public class ForgeServerJAR {
 
 		String[] vmArgs = ManagementFactory.getRuntimeMXBean().getInputArguments().toArray(new String[0]);
 		String[] cmd = new String[vmArgs.length + 2];
-		cmd[0] = "java";
+		
+		String javaHome = System.getenv("JAVA_HOME");
+		if (javaHome == null) {
+			cmd[0] = "java";
+		} else {
+			cmd[0] = javaHome + "/bin/java";
+		}
 
 		System.arraycopy(vmArgs, 0, cmd, 1, vmArgs.length);
 
