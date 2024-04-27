@@ -29,8 +29,8 @@ public class ForgeServerJAR {
 		}
 
 		String[] vmArgs = ManagementFactory.getRuntimeMXBean().getInputArguments().toArray(new String[0]);
-		String[] cmd = new String[vmArgs.length + 2];
-		
+		String[] cmd = new String[vmArgs.length + args.length + 2];
+
 		String javaHome = System.getenv("JAVA_HOME");
 		if (javaHome == null) {
 			cmd[0] = "java";
@@ -43,6 +43,8 @@ public class ForgeServerJAR {
 		boolean windows = System.getProperty("os.name").startsWith("Windows");
 		cmd[1 + vmArgs.length] = "@libraries/net/minecraftforge/forge/" + forgeVersion + "/" + (windows ? "win" : "unix")
 				+ "_args.txt";
+
+		System.arraycopy(args, 0, cmd, 2 + vmArgs.length, args.length);
 
 		try {
 			new ServerBootstrap().startServer(cmd);
