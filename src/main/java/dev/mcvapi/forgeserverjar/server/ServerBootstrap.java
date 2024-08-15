@@ -46,6 +46,18 @@ public class ServerBootstrap {
 				}
 			}).start();
 
+			new Thread(() -> {
+				try (BufferedReader userInputReader = new BufferedReader(new InputStreamReader(System.in))) {
+					String userInput;
+					while ((userInput = userInputReader.readLine()) != null) {
+						processHolder.writer.write(userInput + "\n");
+						processHolder.writer.flush();
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}).start();
+
 			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
 				if (processHolder.process != null && processHolder.process.isAlive()) {
 					try {
