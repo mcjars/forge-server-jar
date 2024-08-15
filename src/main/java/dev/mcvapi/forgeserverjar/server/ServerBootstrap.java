@@ -1,33 +1,94 @@
-package dev.mcvapi.forgeserverjar.server;
+package dev.mcvapi.neoforgeserverjar.server;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
 
 public class ServerBootstrap {
-    public void startServer(String[] cmd) throws ServerStartupException {
-        try {
-            Process process = new ProcessBuilder(cmd)
-                    .command(cmd)
-                    .inheritIO()
-                    .start();
+	private static class ProcessHolder {
+		Process process;
+		BufferedWriter writer;
+		BufferedReader stdoutReader;
+		BufferedReader stderrReader;
+	}
 
-            Runtime.getRuntime().addShutdownHook(new Thread(process::destroy));
+	public void startServer(String[] cmd) throws ServerStartupException {
+		ProcessHolder processHolder = new ProcessHolder();
+		try {
+			ProcessBuilder processBuilder = new ProcessBuilder(cmd);
+			processHolder.process = processBuilder.start();
 
-            while (process.isAlive()) {
-                try {
-                    process.waitFor();
-                    break;
-                } catch (InterruptedException ignore) {
-                }
-            }
-        } catch (IOException exception) {
-            throw new ServerStartupException("Failed to start the Forge server.", exception);
-        }
-    }
+			processHolder.writer = new BufferedWriter(new OutputStreamWriter(processHolder.process.getOutputStream()));
+			processHolder.stdoutReader = new BufferedReader(new InputStreamReader(processHolder.process.getInputStream()));
+			processHolder.stderrReader = new BufferedReader(new InputStreamReader(processHolder.process.getErrorStream()));
 
-    @SuppressWarnings("InnerClassMayBeStatic")
-    public static class ServerStartupException extends Exception {
-        ServerStartupException(String message, Throwable cause) {
-            super(message, cause);
-        }
-    }
+			new Thread(() -> {
+				try {
+					String line;
+					while ((line = processHolder.stdoutReader.readLine()) != null) {
+						System.out.println(line);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}).start();
+
+			new Thread(() -> {
+				try {
+					String line;
+					while ((line = processHolder.stderrReader.readLine()) != null) {
+						System.err.println(line);
+					}
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}).start();
+
+			Runtime.getRuntime().addShutdownHook(new Thread(() -> {
+				if (processHolder.process != null && processHolder.process.isAlive()) {
+					try {
+						processHolder.writer.write("stop\n");
+						processHolder.writer.flush();
+
+						processHolder.process.waitFor();
+					} catch (IOException | InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
+				}
+			}));
+
+			try {
+				processHolder.process.waitFor();
+			} catch (InterruptedException e) {
+				Thread.currentThread().interrupt();
+			}
+		} catch (IOException exception) {
+				throw new ServerStartupException("Failed to start the Forge server.", exception);
+		} finally {
+			if (processHolder.process != null && processHolder.process.isAlive()) {
+				try {
+					processHolder.writer.write("stop\n");
+					processHolder.writer.flush();
+				} catch (IOException e) {
+					e.printStackTrace();
+				} finally {
+					processHolder.process.destroy();
+					try {
+						processHolder.process.waitFor();
+					} catch (InterruptedException e) {
+						Thread.currentThread().interrupt();
+					}
+				}
+			}
+		}
+	}
+
+	@SuppressWarnings("InnerClassMayBeStatic")
+	public static class ServerStartupException extends Exception {
+		ServerStartupException(String message, Throwable cause) {
+			super(message, cause);
+		}
+	}
 }
