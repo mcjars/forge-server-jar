@@ -1,4 +1,4 @@
-package dev.mcvapi.neoforgeserverjar.server;
+package dev.mcvapi.forgeserverjar.server;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
